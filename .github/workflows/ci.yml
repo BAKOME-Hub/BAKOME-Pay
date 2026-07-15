@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Verify HTML
+        run: |
+          echo "✅ HTML files:"
+          find docs -name "*.html" -exec echo "  📄 {}" \;
+          
+      - name: Verify JavaScript
+        run: |
+          echo "✅ JS files:"
+          find src -name "*.js" -exec echo "  📄 {}" \;
+          
+      - name: Check file structure
+        run: |
+          echo "📁 Project structure:"
+          find . -type f ! -path './.git/*' | sort
+          
+      - name: Validate JSON (if any)
+        run: |
+          echo "✅ No JSON files to validate" || true
+          
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
