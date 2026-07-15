@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💸 BAKOME Pay — Solana P2P Payments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+</head>
+<body class="bg-gray-950 text-white min-h-screen">
+    <nav class="bg-gray-900 p-4 flex justify-between items-center">
+        <span class="text-xl font-bold text-purple-400">💸 BAKOME Pay</span>
+        <button onclick="connectWallet()" id="connectBtn" class="bg-purple-600 px-4 py-2 rounded-lg hover:bg-purple-500">
+            🔌 Connect Phantom
+        </button>
+    </nav>
+
+    <main class="max-w-2xl mx-auto p-8 text-center">
+        <img src="https://raw.githubusercontent.com/BAKOME-Hub/BAKOME-Pay/main/assets/banner.png" alt="BAKOME Pay" class="w-full rounded-xl mb-8">
+        
+        <h1 class="text-4xl font-black mb-4 bg-gradient-to-r from-purple-400 to-green-400 bg-clip-text text-transparent">
+            Send Money Instantly on Solana
+        </h1>
+        <p class="text-xl text-gray-400 mb-8">P2P payments. No app required. Just a link.</p>
+
+        <div id="walletInfo" class="bg-gray-900 rounded-xl p-6 mb-8 hidden">
+            <div class="text-sm text-gray-400">Connected Wallet</div>
+            <div class="text-lg font-mono text-purple-400" id="walletAddress"></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 mb-8">
+            <div class="bg-gray-900 p-6 rounded-xl"><div class="text-3xl mb-2">💰</div><div class="font-bold">SOL & USDC</div></div>
+            <div class="bg-gray-900 p-6 rounded-xl"><div class="text-3xl mb-2">🔗</div><div class="font-bold">Payment Links</div></div>
+            <div class="bg-gray-900 p-6 rounded-xl"><div class="text-3xl mb-2">🧠</div><div class="font-bold">AI Assistant</div></div>
+        </div>
+
+        <footer class="text-xs text-gray-600 mt-8">
+            <p>💸 BAKOME Pay v1.0 — <a href="https://x.com/BaksBaxe" class="text-purple-400">@BaksBaxe</a> | <a href="https://github.com/BAKOME-Hub/BAKOME-Pay" class="text-green-400">GitHub</a></p>
+        </footer>
+    </main>
+
+    <script>
+        async function connectWallet() {
+            if (window.solana) {
+                await window.solana.connect();
+                document.getElementById('walletInfo').classList.remove('hidden');
+                document.getElementById('walletAddress').textContent = window.solana.publicKey.toString();
+                document.getElementById('connectBtn').textContent = '✅ Connected';
+                document.getElementById('connectBtn').classList.add('bg-green-600');
+            } else {
+                window.open('https://phantom.app', '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
